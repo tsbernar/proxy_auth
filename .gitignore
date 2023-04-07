@@ -1,0 +1,5 @@
+database.db
+/dist
+*/__pycache__/
+.DS_store
+*.log

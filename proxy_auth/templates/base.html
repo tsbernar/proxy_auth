@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Flask Auth Example</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css"
+    />
+  </head>
+
+  <body>
+    <section class="hero is-link is-fullheight">
+      <div class="hero-head">
+        <nav class="navbar">
+          <div class="container">
+            <div id="navbarMenuHeroA" class="navbar-menu">
+              <div class="navbar-end">
+                {% if "proxy_user_id" in session %}
+                <span class="navbar-item"> {{ session["proxy_username"]}} </span
+                >{% else %}
+                <a href="{{ url_for('auth.login') }}" class="navbar-item">
+                  Login
+                </a>
+                {% endif %}
+                <a href="{{ url_for('auth.logout') }}" class="navbar-item">
+                  Logout
+                </a>
+              </div>
+            </div>
+          </div>
+        </nav>
+
+        {% with messages = get_flashed_messages() %} {% if messages %}
+        <ul class="flashes is-danger">
+          {% for message in messages %}
+          <li>
+            <div class="notification is-warning has-text-centered">
+              {{ message }}
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %} {% endwith %}
+      </div>
+
+      <div class="container has-text-centered">
+        {% block content %} {% endblock %}
+      </div>
+      <div class="container has-text-centered"></div>
+      <div class="container has-text-centered"></div>
+    </section>
+  </body>
+</html>

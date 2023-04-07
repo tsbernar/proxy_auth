@@ -1,0 +1,93 @@
+{% extends "base.html" %} {% block content %}
+<section class="hero is-primary">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">Admin Panel</h1>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <h2 class="title is-2">Users</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Is Admin</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in users %}
+            <tr>
+              <td>{{ user.id }}</td>
+              <td>{{ user.username }}</td>
+              <td>{{ "Yes" if user.is_admin else "No" }}</td>
+              <td>
+                {% if user.id != session["proxy_user_id"] %}
+                <form
+                  action="{{ url_for('admin.delete_user', user_id=user.id) }}"
+                  method="post"
+                  class="is-inline"
+                >
+                  {% if session.is_admin %}
+                  <input type="hidden" name="_method" value="delete" />
+                  <button
+                    class="button is-small is-danger"
+                    type="submit"
+                    onclick="return confirm('Are you sure?')"
+                  >
+                    Delete
+                  </button>
+                  {% endif %}
+                </form>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="column">
+        <h2 class="title is-2">Add User</h2>
+        <form action="{{ url_for('admin.add_user') }}" method="POST">
+          <div class="field">
+            <label class="label">Username</label>
+            <div class="control">
+              <input class="input" type="text" name="username" required />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Password</label>
+            <div class="control">
+              <input class="input" type="password" name="password" required />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Is Admin?</label>
+            <div class="control">
+              <label class="radio">
+                <input type="radio" name="is_admin" value="1" />
+                Yes
+              </label>
+              <label class="radio">
+                <input type="radio" name="is_admin" value="0" checked />
+                No
+              </label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+
+              <button class="button is-primary" {{ '' if session.is_admin else 'disabled' }} >Add User</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

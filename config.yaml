@@ -1,0 +1,6 @@
+logging:
+  log_level: DEBUG
+  log_file: proxy_auth.log
+database_file: database.db
+port: 1899
+secret_key: mysecretkey123
